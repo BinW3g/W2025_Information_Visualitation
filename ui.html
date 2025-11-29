@@ -7,8 +7,11 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="libraries/d3.v7.js"></script>
-  <script src="libraries/jquery-3.7.1.min.js"></script>
+  <script src="https://d3js.org/d3.v7.js"></script>
+  <script src="https://unpkg.com/topojson@3"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="map.js" defer></script>
+  <script src="ui.js" defer></script>
 
   <!-- Tailwind Config for Dark Mode -->
   <script>
@@ -98,7 +101,7 @@
 
 <div class="flex flex-1 h-full overflow-hidden relative">
 
-  <!-- SIDEBAR -->
+  <!--------------------------------------------------------------------------- SIDEBAR --------------------------------------------------------------------------->
   <aside id="sidebar" class="w-80 bg-white dark:bg-darkcard border-r border-gray-200 dark:border-gray-700 flex flex-col transition-all duration-300 transform translate-x-0 z-20 h-full overflow-y-auto flex-shrink-0 absolute md:relative">
 
     <!-- Sidebar Header: Country & Menu -->
@@ -225,7 +228,7 @@
     </div>
   </aside>
 
-  <!-- MAIN CONTENT AREA -->
+  <!--------------------------------------------------------------------------- MAIN CONTENT AREA --------------------------------------------------------------------------->
   <main class="flex-1 flex flex-col h-full bg-white dark:bg-darkbg relative z-0">
 
     <!-- Re-open Sidebar Button (Visible when sidebar is collapsed) -->
@@ -233,21 +236,12 @@
       <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Map Area (Placeholder) -->
-    <div class="flex-1 bg-gray-100 dark:bg-gray-900 relative overflow-hidden flex items-center justify-center border-b border-gray-200 dark:border-gray-700">
-      <!-- Grid pattern for 'sketch' look -->
-      <div class="absolute inset-0 opacity-10"
-           style="background-image: radial-gradient(#64748b 1px, transparent 1px); background-size: 20px 20px;">
-      </div>
-
-      <div class="text-center z-10 opacity-40">
-        <i class="fas fa-map-marked-alt text-6xl mb-4 text-gray-400 dark:text-gray-600"></i>
-        <p class="text-xl font-medium text-gray-500 dark:text-gray-400">Map Visualization Area</p>
-        <p class="text-sm text-gray-400 dark:text-gray-500">(Blank as requested)</p>
-      </div>
+    <!-- Map Area -->
+    <div id="map-container" class="flex-1 bg-gray-100 dark:bg-gray-900 relative overflow-hidden flex items-center justify-center border-b border-gray-200 dark:border-gray-700">
+      <svg id="myMap"></svg>
     </div>
 
-    <!-- BOTTOM TIMELINE -->
+    <!--------------------------------------------------------------------------- BOTTOM TIMELINE --------------------------------------------------------------------------->
     <div class="h-auto min-h-[100px] bg-white dark:bg-darkcard border-t border-gray-200 dark:border-gray-700 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20">
       <div class="flex flex-col md:flex-row items-center gap-4 h-full">
 
@@ -284,8 +278,5 @@
 
   </main>
 </div>
-
-<!-- Link to JS -->
-<script src="backend.js"></script>
 </body>
 </html>
