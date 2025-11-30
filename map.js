@@ -5,8 +5,10 @@ const colorScale = d3.scaleOrdinal(d3.schemeSet3);
 const margin = 20;
 const geoJsonFile = "./data/countries.json"
 let zoom;
-let currentSelection;
 let allFeatures = [];
+let currentSelection;
+let currentAthleteData;
+let currentScoreCol;
 
 function initMap() {
   console.log("Initializing map with country");
@@ -21,11 +23,11 @@ function initMap() {
 
   window.addEventListener("resize", () => {
     // Re-run updateMap whenever the window size changes
-    updateMap(currentSelection);
+    updateMap(currentSelection, currentAthleteData, currentScoreCol);
   });
 
   d3.json(geoJsonFile).then(function(geoData) {
-    // --- WINDING FIX ---
+    // ---FIXES geoJsonFile otherwise it trys to draw into the wrong direction? ---
     geoData.features.forEach(function(feature) {
       if (feature.geometry.type === "Polygon") {
         feature.geometry.coordinates.forEach(ring => ring.reverse());
@@ -50,6 +52,8 @@ function initMap() {
  */
 function updateMap(selectedCountry, athleteData = [], scoreCol = "TotalKg") {
   currentSelection = selectedCountry;
+  currentAthleteData = athleteData;
+  currentScoreCol = scoreCol;
   const container = document.getElementById("map-container");
 
   // 1. Create a Lookup Map for Athlete Data (State Name -> Athlete Object)
@@ -89,6 +93,8 @@ function updateMap(selectedCountry, athleteData = [], scoreCol = "TotalKg") {
   );
 
   let delCounter = 0;
+  let missingCountries = new Map(athleteMap);
+
   // 5. Draw Paths (State/Province shapes)
   mapGroup.selectAll("path")
   .data(filteredFeatures, d => d.properties.name_en) // Key function ensures consistent DOM mapping
@@ -120,10 +126,12 @@ function updateMap(selectedCountry, athleteData = [], scoreCol = "TotalKg") {
       // Show rich info if data exists
       titleText.text(`${stateName}\nWinner: ${athlete.Name}\nScore: ${athlete[scoreCol]} kg`);
       delCounter++;
+      missingCountries.delete(stateShort)
     } else {
       // Show just state name if no data
       titleText.text(`${stateName}\n(No data)`);
     }
   });
   console.log("is " + delCounter + " should " + athleteMap.size);
+  console.log(missingCountries);
 }

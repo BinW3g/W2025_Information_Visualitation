@@ -4,7 +4,7 @@
 const dropdownData = {
   countries: ["Argentina", "Australia", "Brazil", "Canada", "China", "Germany",
     "India", "Mexico", "Netherlands", "New Zealand",
-    "South Africa", "United Kingdom", "United States of America"],
+    "South Africa", "United States of America"], // "United Kingdom" TODO think about a solution
   scores: [
     "Dots", "Goodlift", "Wilks", "Glossbrenner",
     "Squat in Kg", "Bench in kg", "Deadlift in kg", "Total in kg"
