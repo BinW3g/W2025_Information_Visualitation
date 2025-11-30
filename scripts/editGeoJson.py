@@ -215,86 +215,10 @@ def clean_country_geometries(input_filename, output_filename):
     print(f"Error: {e}")
 
 
-
-  def clean_feature_properties(properties):
-    """
-    Cleaning utility: Removes language-specific 'name_' keys (e.g., name_fr, name_de)
-    except for 'name_en'. Preserves non-language attributes like 'name_len'.
-    """
-    # Regex to match name_ followed by 2 or 3 lowercase letters (typical ISO codes)
-    lang_pattern = re.compile(r"^name_[a-z]{2,3}$")
-
-    keys_to_remove = []
-    for key in properties:
-      if lang_pattern.match(key):
-        # We explicitly KEEP 'name_en'.
-        # We also keep structural keys like 'name_len' or 'name_alt' if they match the regex,
-        # unless you specifically want those removed too.
-        if key == "name_en":
-          continue
-        if key in ["name_alt", "name_len", "name_local"]:
-          continue
-
-        keys_to_remove.append(key)
-
-    for key in keys_to_remove:
-      del properties[key]
-
-    return properties
-
-class PostalPropertyManager:
-  def __init__(self):
-    # Initialize the data structure based on your uploaded images
-    # Keys are Country names, Values are lists of State/Province codes
-    self.raw_data = {
-      "New Zealand": ["AKL", "BOP", "CAN", "HKB", "MBH", "NTL", "WGN", "WKO"],
-      "India": ["CG", "JH", "MH", "MP", "OR", "RJ", "WB"],
-      "China": ["AH", "FJ", "GD", "HEB", "HEN", "HUB", "HUN", "JL", "JS", "JX", "LN", "SD", "YN", "ZJ"],
-      "Mexico": ["AG", "BC", "BS", "CH", "CM", "CO", "CS", "DF", "EM", "GR", "GT", "HG", "JA", "MO", "NL", "QR", "QT", "SI", "SL", "SO", "TB", "TM", "VE", "YU"],
-      "South Africa": ["EC", "FS", "GT", "KZN", "MP", "NC", "NW", "WC"],
-      "Argentina": ["BA", "CB", "CN", "ER", "JY", "LP", "MN", "MZ", "NQ", "RN", "SA", "SC", "SE", "SF", "SJ", "SL", "TM"],
-      "Australia": ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"],
-      "Germany": ["BB", "BW", "BY", "HE", "MV", "NI", "NRW", "RP"],
-      "Netherlands": ["FL", "GE", "NH", "UT", "ZH"],
-      "Brazil": ["AM", "AP", "BA", "DF", "ES", "GO", "MG", "MS", "MT", "PA", "PB", "PE", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SP"]
-    }
-    self.dataframes = {}
-    self._initialize_dataframes()
-
-  def _initialize_dataframes(self):
-    """Creates a DataFrame for each country with 'Abc' as the default value."""
-    for country, states in self.raw_data.items():
-      # Create a dataframe with one row (the Country) and columns (the States)
-      df = pd.DataFrame([["Abc"] * len(states)], columns=states, index=[country])
-      self.dataframes[country] = df
-
-  def update_property(self, country, state_code, new_value):
-    """Updates a specific state's postal property."""
-    if country not in self.dataframes:
-      print(f"Error: Country '{country}' not found.")
-      return
-
-    df = self.dataframes[country]
-
-    if state_code == "ALL":
-      df.loc[country, :] = new_value
-      print(f"Updated ALL states in {country} to '{new_value}'.")
-    elif state_code in df.columns:
-      df.at[country, state_code] = new_value
-      print(f"Updated {country} -> {state_code} to '{new_value}'.")
-    else:
-      print(f"Error: State code '{state_code}' not found in {country}.")
-
-  def export_data(self):
-    """Helper to print all dataframes (or you could save to CSV here)."""
-    for country, df in self.dataframes.items():
-      print(f"\n--- {country} ---")
-      print(df.to_string())
-
 if __name__ == "__main__":
     # You can change these filenames if needed
     # input_file = './data/countries.json'
     # output_file = './data/countries_filtered.json'
     #
     # filter_geojson(input_file, output_file)
-    clean_country_geometries('./data/countries.json', './data/countries_cleaned.json')
+    clean_country_geometries('./../data/countries.json', './../data/countries_cleaned.json')

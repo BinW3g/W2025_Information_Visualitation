@@ -3,8 +3,8 @@ import os
 
 def filter_csv():
   # File paths
-  input_path = './data/openpowerlifting-2025-11-22-823f23d6.csv'
-  output_path = './data/openpowerlifting_filtered.csv'
+  input_path = './../data/openpowerlifting-2025-11-22-823f23d6.csv'
+  output_path = './../data/openpowerlifting_filtered.csv'
 
   # The list of specific columns to keep
   columns_to_keep = [
