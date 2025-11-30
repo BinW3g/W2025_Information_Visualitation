@@ -35,7 +35,8 @@ const dropdownData = {
   ]
 };
 
-const fileName = "./data/openpowerlifting_filtered.csv";
+const fileName = "https://media.githubusercontent.com/media/BinW3g/W2025_Information_Visualitation/refs/heads/main/data/openpowerlifting_filtered.csv?token=AQA6ZHY2GL6FGOPOJUYIVT3JFQ2TO";
+// const fileName = "./data/openpowerlifting_filtered.csv";
 // const fileName = "./data/small.csv";
 
 // --- DOM Elements ---
