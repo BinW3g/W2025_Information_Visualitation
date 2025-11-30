@@ -92,6 +92,7 @@ function init() {
   populateDropdowns();
   initTheme();
   setupEventListeners();
+  initMap();
 
   // Show loading state or console log
   console.log("Loading data...");
@@ -123,9 +124,6 @@ function init() {
 
     // 3. Update UI Sliders with real data bounds
     configureSliders();
-
-    // 4. Initial Map
-    initMap();
 
     // 5. Initial Filter Application
     applyFilters();
@@ -216,9 +214,6 @@ function populateDropdowns() {
 
   // 1. Countries (No "All" option)
   dropdownData.countries.forEach(c => elements.countrySelect.appendChild(createOption(c)));
-  elements.countrySelect.addEventListener("change", e => {
-    onCountryChange(e.target.value);
-  })
 
   // 2. Scores (No "All" option)
   dropdownData.scores.forEach(s => elements.scoreSelect.appendChild(createOption(s)));
@@ -556,6 +551,10 @@ function setupEventListeners() {
     elements.sidebar.classList.add('-translate-x-full');
     elements.reopenSidebar.classList.remove('hidden');
   }
+
+  elements.countrySelect.addEventListener("change", e => {
+    onCountryChange(e.target.value);
+  })
 }
 
 // Run
