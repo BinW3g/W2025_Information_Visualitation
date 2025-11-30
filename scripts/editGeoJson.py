@@ -1,10 +1,7 @@
 import json
-import pandas as pd
-import re
 
 def filter_geojson(input_filename, output_filename):
     # List of geounits to remove
-    # Make sure these match the exact spelling and capitalization in your JSON file
     units_to_remove = [
         "Scotland",
         "Wales",
@@ -30,10 +27,8 @@ def filter_geojson(input_filename, output_filename):
         for feature in data['features']:
             properties = feature.get('properties', {})
 
-            # We use .get() here to avoid errors if 'geounit' is missing from a specific feature
             geounit = properties.get('geonunit')
 
-            # Keep the feature if its geounit is NOT in our removal list
             if geounit not in units_to_remove:
                 filtered_features.append(feature)
 

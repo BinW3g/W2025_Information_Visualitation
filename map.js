@@ -5,6 +5,8 @@ const mapGroup = svg.append("g");
 // 2. We create a separate group for the Legend (this stays static)
 const legendGroup = svg.append("g").attr("class", "legend");
 
+const baseWidth = 960;
+const baseHeight = 600;
 const margin = 20;
 const geoJsonFile = "./data/countries.json"
 let zoom;
@@ -25,9 +27,12 @@ function initMap() {
   });
   svg.call(zoom);
 
-  window.addEventListener("resize", () => {
-    updateMap(currentSelection, currentAthleteData, currentScoreCol);
-  });
+  // --- Responsive SVG Setup ---
+  svg
+  .attr("viewBox", `${-margin/2} ${-margin/2} ${baseWidth} ${baseHeight}`)
+  .attr("preserveAspectRatio", "xMidYMid meet") // Keeps the map centered and proportional
+  .classed("w-full h-full", true) // Tailwind classes to fill container
+  .call(zoom);
 
   d3.json(geoJsonFile).then(function(geoData) {
     geoData.features.forEach(function(feature) {
@@ -51,7 +56,6 @@ function updateMap(selectedCountry, athleteData = [], scoreCol = "TotalKg") {
   currentSelection = selectedCountry;
   currentAthleteData = athleteData;
   currentScoreCol = scoreCol;
-  const container = document.getElementById("map-container");
   const unit = scoreCol.includes("Kg") ? "kg" : "";
 
   // 1. Create Lookup & Calc Min/Max
@@ -85,12 +89,8 @@ function updateMap(selectedCountry, athleteData = [], scoreCol = "TotalKg") {
   .range(colorRange);
 
   // 2. Responsive Sizing
-  const width = container.clientWidth - margin;
-  const height = container.clientHeight - margin;
-
-  svg
-  .attr("width", width)
-  .attr("height", height);
+  const width = baseWidth - margin;
+  const height = baseHeight - margin;
 
   // 3. Filter GeoJSON
   const filteredFeatures = allFeatures.filter(d => d.properties.admin === selectedCountry);
